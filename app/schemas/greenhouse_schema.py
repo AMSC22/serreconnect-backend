@@ -7,6 +7,7 @@ class GreenhouseBase(BaseModel):
     """Schéma de base pour Greenhouse"""
     name: str = Field(..., description="Nom de la serre")
     description: Optional[str] = Field(None, description="Description de la serre")
+    location: Optional[str] = Field(None, description="Localisation de la serre")
     user_id: str = Field(..., description="ID de l'utilisateur propriétaire")
     temperature: Optional[float] = Field(None, description="Température actuelle (°C)")
     humidity: Optional[float] = Field(None, description="Humidité actuelle (%)")
@@ -28,6 +29,7 @@ class GreenhouseCreate(GreenhouseBase):
 class GreenhouseUpdate(BaseModel):
     """Schéma pour la mise à jour d'une serre"""
     name: Optional[str] = Field(None, description="Nom de la serre")
+    location: Optional[str] = Field(None, description="Localisation de la serre")
     description: Optional[str] = Field(None, description="Description de la serre")
     temperature: Optional[float] = Field(None, description="Température actuelle (°C)")
     humidity: Optional[float] = Field(None, description="Humidité actuelle (%)")

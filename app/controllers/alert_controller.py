@@ -3,7 +3,7 @@ from typing import List, Dict
 from app.services.alert_service import AlertService
 from app.services.greenhouse_service import GreenhouseService
 from app.schemas.alert_schema import AlertCreate, AlertUpdate, AlertResponse
-from app.auth.jwt_handler import get_current_user
+from app.auth.jwt_handler import get_current_user, get_current_admin
 
 router = APIRouter(
     prefix="/alerts",
@@ -103,7 +103,7 @@ async def get_alerts_by_greenhouse(greenhouse_id: str, current_user: dict = Depe
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=List[AlertResponse])
-async def get_all_alerts(current_user: dict = Depends(get_current_user)):
+async def get_all_alerts(current_user: dict = Depends(get_current_admin)):
     """Récupérer toutes les alertes (admins uniquement)"""
     try:
         if not current_user["is_admin"]:

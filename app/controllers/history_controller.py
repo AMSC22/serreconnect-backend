@@ -3,7 +3,7 @@ from typing import List, Optional
 from app.services.history_service import HistoryService
 from app.services.greenhouse_service import GreenhouseService
 from app.schemas.history_schema import HistoryCreate, HistoryResponse
-from app.auth.jwt_handler import get_current_user
+from app.auth.jwt_handler import get_current_user, get_current_admin
 from datetime import datetime
 
 router = APIRouter(
@@ -108,7 +108,7 @@ async def get_history_by_greenhouse(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=List[HistoryResponse])
-async def get_all_history(current_user: dict = Depends(get_current_user)):
+async def get_all_history(current_user: dict = Depends(get_current_admin)):
     """Récupérer toutes les entrées historiques (admins uniquement)"""
     try:
         if not current_user["is_admin"]:

@@ -18,6 +18,14 @@ class GreenhouseRepository(BaseRepository[GreenhouseModel]):
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des serres par user_id: {str(e)}")
             raise
+    
+    async def get_by_greenhouse_id(self, greenhouse_id: str, skip: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
+        """Récupérer les serres d'un utilisateur"""
+        try:
+            return await self.get_all(filter_query={"greenhouse_id": greenhouse_id}, skip=skip, limit=limit)
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des serres par user_id: {str(e)}")
+            raise
 
     async def search_by_name(self, name: str, skip: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
         """Rechercher des serres par nom (recherche partielle)"""

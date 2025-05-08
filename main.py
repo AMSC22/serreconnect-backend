@@ -8,6 +8,9 @@ from app.controllers.alert_controller import router as alert_router
 from app.controllers.history_controller import router as history_router
 from app.controllers.settings_controller import router as settings_router
 from app.controllers.auth_controller import router as auth_router
+from app.controllers.badges_controller import router as badge_router
+from app.controllers.actuator_controller import router as actuator_router
+
 import logging
 from contextlib import asynccontextmanager
 
@@ -19,10 +22,10 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Démarrage de l'application...")
+    logger.info("Connexion à MongoDB établie")
     await Database.connect_to_database()
     yield
-    logger.info("Arrêt de l'application...")
+    logger.info("Connexion à MongoDB fermée")
     await Database.close_database_connection()
 
 app = FastAPI(
@@ -46,6 +49,8 @@ app.include_router(greenhouse_router, prefix="/api/v1")
 app.include_router(alert_router, prefix="/api/v1")
 app.include_router(history_router, prefix="/api/v1")
 app.include_router(settings_router, prefix="/api/v1")
+app.include_router(badge_router, prefix="/api/v1")
+app.include_router(actuator_router, prefix="/api/v1")
 
 @app.get("/health")
 async def health_check():

@@ -21,6 +21,7 @@ class UserUpdate(BaseModel):
     password: Optional[str] = Field(None, description="Mot de passe en clair")
     is_admin: Optional[bool] = Field(None, description="Statut administrateur")
     is_active: Optional[bool] = Field(None, description="Statut d'activation")
+    reset_token: Optional[str] = Field(None, description="Token de réinitialisation de mot de passe")
 
 class UserResponse(UserBase):
     """Schéma pour la réponse d'un User"""
