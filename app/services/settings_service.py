@@ -45,13 +45,22 @@ class SettingsService(BaseService[SettingsModel, SettingsCreate, SettingsUpdate]
             logger.error(f"Erreur lors de la récupération des paramètres: {e}")
             raise
 
-    async def get_by_user_id(self, user_id: str) -> Optional[SettingsModel]:
+    async def get_by_user_id(self, user_id: dict) -> Optional[SettingsModel]:
         """Récupérer les paramètres d'un utilisateur"""
         try:
             entity = await self.repository.get_by_user_id(user_id)
             return SettingsModel(**entity) if entity else None
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des paramètres par user_id: {e}")
+            raise
+    
+    async def get_by_greenhouse_id(self, greenhouse_id: dict) -> Optional[SettingsModel]:
+        """Récupérer les paramètres d'une Serre"""
+        try:
+            entity = await self.repository.get_by_greenhouse_id(greenhouse_id)
+            return SettingsModel(**entity) if entity else None
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des paramètres par greenhouse_id: {e}")
             raise
 
     async def get_all(self, skip: int = 0, limit: int = 100) -> List[SettingsModel]:
@@ -98,4 +107,13 @@ class SettingsService(BaseService[SettingsModel, SettingsCreate, SettingsUpdate]
             return await self.repository.delete(id)
         except Exception as e:
             logger.error(f"Erreur lors de la suppression des paramètres: {e}")
+            raise
+        
+    async def get_default_settings(self) -> Optional[dict]:
+        """Récupérer les valeurs par défaut des paramètres"""
+        try:
+            entity = await self.repository.get_default()
+            return entity if entity else None
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des paramètres par défaut dans le service : {str(e)}")
             raise

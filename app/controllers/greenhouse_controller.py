@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import List
 from app.services.greenhouse_service import GreenhouseService
 from app.schemas.greenhouse_schema import GreenhouseCreate, GreenhouseUpdate, GreenhouseResponse
-from app.auth.jwt_handler import get_current_user
+from app.auth.jwt_handler import get_current_user, get_current_admin
 
 router = APIRouter(
     prefix="/greenhouses",
@@ -73,7 +73,7 @@ async def search_greenhouses(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=List[GreenhouseResponse])
-async def get_all_greenhouses(current_user: dict = Depends(get_current_user)):
+async def get_all_greenhouses(current_user: dict = Depends(get_current_admin)):
     """Récupérer toutes les serres (admins uniquement)"""
     try:
         if not current_user["is_admin"]:
@@ -118,6 +118,25 @@ async def delete_greenhouse(id: str, current_user: dict = Depends(get_current_us
         if not result:
             raise HTTPException(status_code=404, detail="Serre non trouvée")
         return {"message": "Serre supprimée avec succès"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@router.get("/{id}/video", response_model=dict)
+async def get_video_stream(
+    id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Récupérer l'URL du flux vidéo d'une serre"""
+    try:
+        service = GreenhouseService()
+        greenhouse = await service.get_by_id(id)
+        if not greenhouse:
+            raise HTTPException(status_code=404, detail="Serre non trouvée")
+        # Exemple : Récupérer l'URL depuis une configuration ou une caméra associée
+        video_url = await service.get_camera_url(id)
+        return {"video_url": video_url}
     except HTTPException:
         raise
     except Exception as e:

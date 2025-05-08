@@ -11,6 +11,7 @@ class UserModel(BaseModel):
     hashed_password: str = Field(..., description="Mot de passe haché")
     is_admin: bool = Field(default=False, description="Statut administrateur")
     is_active: bool = Field(default=True, description="Statut d'activation")
+    reset_token: Optional[str] = Field(None, description="Token de réinitialisation de mot de passe")
     created_at: datetime = Field(default_factory=get_local_time, description="Date de création")
     updated_at: datetime = Field(default_factory=get_local_time, description="Date de mise à jour")
 

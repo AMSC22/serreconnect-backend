@@ -87,3 +87,7 @@ class GreenhouseService(BaseService[GreenhouseModel, GreenhouseCreate, Greenhous
         except Exception as e:
             logger.error(f"Erreur lors de la suppression de la serre: {e}")
             raise
+        
+    async def get_camera_url(self, greenhouse_id: str) -> str:
+        # TODO: Implémenter la logique (par exemple, récupérer l'URL depuis une caméra IP)
+        return f"rtsp://camera-{greenhouse_id}:554/stream"

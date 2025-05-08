@@ -9,7 +9,7 @@ router = APIRouter(
     tags=["users"]
 )
 
-@router.post("/", response_model=UserResponse, dependencies=[Depends(get_current_admin)])
+@router.post("/", response_model=UserResponse)
 async def create_user(user: UserCreate) -> UserResponse:
     """Créer un nouvel utilisateur (admin uniquement)"""
     try:
@@ -89,3 +89,4 @@ async def delete_user(id: str):
         return {"message": "Utilisateur supprimé avec succès"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    

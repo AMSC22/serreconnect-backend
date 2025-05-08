@@ -11,10 +11,10 @@ class SettingsRepository(BaseRepository[SettingsModel]):
     def __init__(self):
         super().__init__("settings")
 
-    async def get_by_user_id(self, user_id: str) -> Optional[Dict[str, Any]]:
+    async def get_by_user_id(self, user_id: dict) -> Optional[Dict[str, Any]]:
         """Récupérer les paramètres d'un utilisateur"""
         try:
-            doc = await self.collection.find_one({"user_id": user_id})
+            doc = await self.collection.find_one(user_id)
             if doc:
                 doc["id"] = str(doc.pop("_id"))
             return doc
@@ -51,4 +51,27 @@ class SettingsRepository(BaseRepository[SettingsModel]):
             )
         except Exception as e:
             logger.error(f"Erreur lors de la recherche des paramètres par user_id: {str(e)}")
+            raise
+        
+    async def get_default(self) -> Optional[dict]:
+        """Récupère les paramètres par defaut"""
+        try:
+            document = await self.collection.find_one({"is_default": True})
+            if document:
+                document["id"] = str(document.pop("_id"))
+                return document
+            return None
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération des paramètres par défaut dans le répostory : {str(e)}")
+            raise
+    
+    async def get_by_greenhouse_id(self, greenhouse_id: str) -> Optional[Dict]:
+        try:
+            document = await self.collection.find_one({"greenhouse_id": greenhouse_id})
+            if document:
+                document["id"] = str(document.pop("_id"))
+                return document
+            return None
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération par greenhouse_id: {str(e)}")
             raise

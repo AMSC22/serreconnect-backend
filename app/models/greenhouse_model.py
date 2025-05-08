@@ -9,6 +9,7 @@ class GreenhouseModel(BaseModel):
     name: str = Field(..., description="Nom de la serre")
     description: Optional[str] = Field(None, description="Description de la serre")
     user_id: str = Field(..., description="ID de l'utilisateur propriétaire")
+    location: Optional[str] = Field(None, description="Localisation de la serre")
     temperature: Optional[float] = Field(None, description="Température actuelle (°C)")
     humidity: Optional[float] = Field(None, description="Humidité actuelle (%)")
     light_level: Optional[float] = Field(None, description="Niveau de luminosité (lux)")
