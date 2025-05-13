@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import List, Dict
 from app.services.user_service import UserService
 from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse
-from app.auth.jwt_handler import get_current_admin
+from app.auth.jwt_handler import get_current_admin, get_current_user
 
 router = APIRouter(
     prefix="/users",
@@ -64,9 +64,9 @@ async def get_all_users():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.put("/{id}", response_model=UserResponse, dependencies=[Depends(get_current_admin)])
+@router.put("/{id}", response_model=UserResponse, dependencies=[Depends(get_current_user)])
 async def update_user(id: str, user_update: UserUpdate):
-    """Mettre à jour un utilisateur (admin uniquement)"""
+    """Mettre à jour un utilisateur"""
     try:
         service = UserService()
         result = await service.update(id, user_update)

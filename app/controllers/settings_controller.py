@@ -67,7 +67,6 @@ async def get_settings_by_user(user_id: str, greenhouse_id: Optional[str] = None
         query = {"user_id": user_id}
         if greenhouse_id:
             query["greenhouse_id"] = greenhouse_id
-        print("greenhouseId = ", greenhouse_id)
         service = SettingsService()
         result = await service.get_by_user_id(query)
         if not result:
@@ -130,12 +129,9 @@ async def update_settings_user(id: str, settings_update: SettingsUpdate, current
     """Mettre à jour des paramètres"""
     try:
         service = SettingsService()
-        settings = await service.get_by_greenhouse_id(id)
-        if not settings:
-            raise HTTPException(status_code=404, detail="Paramètres non trouvés")
         result = await service.update(id, settings_update)
         if not result:
-            raise HTTPException(status_code=404, detail="Paramètres non trouvés")
+            raise HTTPException(status_code=404, detail="Paramètres non trouvé")
         return result
     except HTTPException:
         raise

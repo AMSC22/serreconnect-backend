@@ -65,9 +65,9 @@ class SettingsRepository(BaseRepository[SettingsModel]):
             logger.error(f"Erreur lors de la récupération des paramètres par défaut dans le répostory : {str(e)}")
             raise
     
-    async def get_by_greenhouse_id(self, greenhouse_id: str) -> Optional[Dict]:
+    async def get_by_greenhouse_id(self, greenhouse_id: dict) -> Optional[Dict]:
         try:
-            document = await self.collection.find_one({"greenhouse_id": greenhouse_id})
+            document = await self.collection.find_one(greenhouse_id)
             if document:
                 document["id"] = str(document.pop("_id"))
                 return document
