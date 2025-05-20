@@ -17,10 +17,8 @@ class BaseRepository(Generic[T]):
     async def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Créer un document"""
         try:
-            print("data 1 = ", data)
             data["created_at"] = get_local_time()
             data["updated_at"] = get_local_time()
-            print("data 2 = ", data)
             result = await self.collection.insert_one(data)
             created_doc = await self.get_by_id(str(result.inserted_id))
             self.logger.info(f"Document créé dans {self.collection.name}: {str(result.inserted_id)}")

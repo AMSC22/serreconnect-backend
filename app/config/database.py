@@ -28,7 +28,9 @@ class Database:
             await cls.smart_greenhouse_db["alerts"].create_index("greenhouse_id")
             await cls.smart_greenhouse_db["history"].create_index("greenhouse_id")
             await cls.smart_greenhouse_db["history"].create_index("recorded_at")
-            await cls.smart_greenhouse_db["settings"].create_index("user_id", unique=True)
+            await cls.smart_greenhouse_db["badges"].create_index("greenhouse_id")
+            await cls.smart_greenhouse_db["actuators"].create_index("greenhouse_id")
+            await cls.smart_greenhouse_db["settings"].create_index([ "user_id", "greenhouse_id" ], unique=True)
             await cls.smart_greenhouse_db["sessions"].create_index("session_id", unique=True)
             logger.info("Connecté à la base de données SmartGreenhouse")
         except Exception as e:
