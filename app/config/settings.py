@@ -9,18 +9,18 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # MongoDB Database
-    MONGODB_URL: str = os.getenv("MONGO_URL")  #"mongodb://localhost:27017"
-    MONGODB_DB_NAME: str = os.getenv("serreconnect_db") #"serreconnect_db"
+    MONGODB_URL: str = os.getenv("MONGO_URL")
+    MONGODB_DB_NAME: str = os.getenv("MONGODB_DB_NAME")
     MONGODB_AUTH_ENABLED: bool = False
 
     # Application Settings
-    APP_NAME: str = "SerreConnect"
-    APP_VERSION: str = "1.0.0"
-    JWT_SECRET_KEY: str = "dev_secret_key"
-    JWT_ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    TIMEZONE: str = "Europe/Paris" 
-    SESSION_INACTIVITY_TIMEOUT_MINUTES: int = 60  # Timeout d'inactivité
+    APP_NAME: str = os.getenv("APP_NAME")
+    APP_VERSION: str = os.getenv("APP_VERSION")
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY")
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    TIMEZONE: str = os.getenv("TIMEZONE") 
+    SESSION_INACTIVITY_TIMEOUT_MINUTES: int = os.getenv("SESSION_INACTIVITY_TIMEOUT_MINUTES")  # Timeout d'inactivité
 
     # CORS Settings
     ALLOWED_ORIGINS: List[str]
