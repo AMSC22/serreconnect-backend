@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from typing import List
 import json
+import os
 
 class Settings(BaseSettings):
     # Environment
@@ -8,8 +9,8 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # MongoDB Database
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    MONGODB_DB_NAME: str = "serreconnect"
+    MONGODB_URL: str = os.getenv("MONGO_URL")  #"mongodb://localhost:27017"
+    MONGODB_DB_NAME: str = os.getenv("serreconnect_db") #"serreconnect_db"
     MONGODB_AUTH_ENABLED: bool = False
 
     # Application Settings
