@@ -12,6 +12,7 @@ from app.controllers.badges_controller import router as badge_router
 from app.controllers.actuator_controller import router as actuator_router
 
 import logging
+import uvicorn
 from contextlib import asynccontextmanager
 
 logging.basicConfig(
@@ -52,6 +53,15 @@ app.include_router(settings_router, prefix="/api/v1")
 app.include_router(badge_router, prefix="/api/v1")
 app.include_router(actuator_router, prefix="/api/v1")
 
+@app.get("/")
+async def root():
+    """Point d'entrée principal de l'API"""
+    return {
+        "message": "Bienvenue sur l'API SmartGreenhouse",
+        "documentation": "/docs",
+        "version": settings.APP_VERSION
+    }
+
 @app.get("/health")
 async def health_check():
     """Vérification de l'état de l'application"""
@@ -60,3 +70,9 @@ async def health_check():
         "version": settings.APP_VERSION,
         "environment": settings.ENV
     }
+
+# Point d'entrée pour l'exécution directe
+if __name__ == "__main__":
+    port = settings.PORT
+    reload_option = settings.ENV == "development"
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=reload_option)
