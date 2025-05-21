@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     # Application Settings
     APP_NAME: str = os.getenv("APP_NAME")
     APP_VERSION: str = os.getenv("APP_VERSION")
+    PORT: int = os.getenv("PORT")
     JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
