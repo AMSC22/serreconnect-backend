@@ -15,10 +15,9 @@ class Database:
             logger.info("Connexion à MongoDB...")
             cls.client = AsyncIOMotorClient(
                 settings.MONGODB_URL,
-                serverSelectionTimeoutMS=5000,
-                connectTimeoutMS=10000,
-                retryWrites=True,
-                w="majority"
+                serverSelectionTimeoutMS=15000,
+                connectTimeoutMS=30000,
+                socketTimeoutMS=60000,
             )
             cls.smart_greenhouse_db = cls.client[settings.MONGODB_DB_NAME]
             await cls.smart_greenhouse_db.command("ping")
